@@ -105,7 +105,8 @@ ComputeAgeHeapingScores <- function(data,
            name.age,
            name.population.year1,
            date1) %>%
-    rename(pop=pop1,
+    rename(#pop=pop1,
+           pop=name.population.year1,
            date=date1)
   
   long_year2 <- data %>% 
@@ -114,7 +115,8 @@ ComputeAgeHeapingScores <- function(data,
            name.age,
            name.population.year2,
            date2) %>%
-    rename(pop=pop2,
+    rename(#pop=pop2,
+           pop=name.population.year2,
            date=date2)
   data_long <- rbind(long_year1, long_year2)
   

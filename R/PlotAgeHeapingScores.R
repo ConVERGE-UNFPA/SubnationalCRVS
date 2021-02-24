@@ -193,7 +193,7 @@ PlotAgeHeapingScores <- function(data,
         geom_point(aes(col=sex,
                        shape=date,
                        size=total_pop)) +
-        scale_size_continuous(labels = comma,
+        scale_size_continuous(labels = scales::comma,
                               range=c(1.5, 7),
                               name="Population")
     } else {
@@ -230,7 +230,7 @@ PlotAgeHeapingScores <- function(data,
         geom_point(aes(col=sex,
                        shape=date,
                        size=total_pop)) +
-        scale_size_continuous(labels = comma,
+        scale_size_continuous(labels = scales::comma,
                               range=c(1.5, 7),
                               name="Population")
     } else {
@@ -267,7 +267,7 @@ PlotAgeHeapingScores <- function(data,
         geom_point(aes(col=sex,
                        shape=date,
                        size=total_pop)) +
-        scale_size_continuous(labels = comma,
+        scale_size_continuous(labels = scales::comma,
                               range=c(1.5, 7),
                               name="Population")
     } else {
@@ -297,11 +297,12 @@ PlotAgeHeapingScores <- function(data,
   ## Noumbissi (with different values of digit argument)
   all_levels_Noumbissi <- unique(levels(data[, name.disaggregations]))
   n_disaggregations_Noumbissi <- length(all_levels_Noumbissi)
-  data_for_Noumbissi <- melt(data=data_with_age_heaping_long,
-                             id.vars=c("date", "sex", "province_name", "total_pop"),
+  data_for_Noumbissi <- reshape2::melt(data=data_with_age_heaping_long,
+                             id.vars=c("date", name.sex, name.disaggregations, "total_pop"),
                              measure.vars=paste0("Noumbissi_", 0:9),
                              variable.name="Noumbissi_digit",
-                             value.name="Noumbissi_value")
+                             value.name="Noumbissi_value") %>%
+                        as.data.frame()
   levels(data_for_Noumbissi$Noumbissi_digit) <- gsub(pattern="Noumbissi_", 
                                                      replacement="", 
                                                      x=levels(data_for_Noumbissi$Noumbissi_digit))
@@ -329,7 +330,7 @@ PlotAgeHeapingScores <- function(data,
                                scale_color_discrete(name="Sex") +
                                scale_shape_discrete(name="Date")
       if (show.population.counts == TRUE) {
-        pop2_one_level <- comma(sum(data_for_Noumbissi_one_level[data_for_Noumbissi_one_level$date == date.2 &
+        pop2_one_level <- scales::comma(sum(data_for_Noumbissi_one_level[data_for_Noumbissi_one_level$date == date.2 &
                                      data_for_Noumbissi_one_level$Noumbissi_digit == 0, 
                                      "total_pop"],
                                     na.rm=TRUE))
@@ -388,8 +389,8 @@ PlotAgeHeapingScores <- function(data,
     
     ## reshape
     head(data_with_age_heaping_long_for_national)
-    reshape_national <- melt(data_with_age_heaping_long_for_national,
-               id.vars=c(name.disaggregations, "sex", "date"),
+    reshape_national <- reshape2::melt(data_with_age_heaping_long_for_national,
+               id.vars=c(name.disaggregations, name.sex, "date"),
                measure.vars=c("roughness", "Whipple", "Myers"),
                variable.name="index_name",
                value.name="index_value")

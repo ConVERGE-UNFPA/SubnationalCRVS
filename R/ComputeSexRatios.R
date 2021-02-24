@@ -83,7 +83,7 @@ ComputeSexRatios <- function(data,
   data_with_sex_ratio$sex_ratio_2 <- round(data_with_sex_ratio$sex_ratio_2, 1)
   # each age group only needs to be represented once (not separately for males and females)
   # but make sure population is summed across the sexes
-  data_with_sex_ratio <- data_with_sex_ratio %>% filter(sex == "f")
+  data_with_sex_ratio <- data_with_sex_ratio %>% filter(sex == name.females)
   data_with_sex_ratio[, name.population.year1] <- NULL
   data_with_sex_ratio[, name.population.year2] <- NULL
   names(data_with_sex_ratio)[names(data_with_sex_ratio) == "pop1_both_sexes"] <- name.population.year1
@@ -92,10 +92,12 @@ ComputeSexRatios <- function(data,
   data_with_sex_ratio[, "get(name.disaggregations)"] <- NULL
   data_with_sex_ratio[, name.sex] <- NULL
   
-  data_with_sex_ratio <- data_with_sex_ratio %>% select(-sex_ratio_1,
-                                                        -sex_ratio_2,
-                                                        everything())
+  # data_with_sex_ratio <- data_with_sex_ratio %>% select(-sex_ratio_1,
+  #                                                       -sex_ratio_2,
+  #                                                       everything()) %>%
+  #                        as.data.frame()
   data_with_sex_ratio[, c("year1", "month1", "day1")] <- NULL
   data_with_sex_ratio[, c("year2", "month2", "day2")] <- NULL
+  head(data_with_sex_ratio)
   return(data_with_sex_ratio)
 }
